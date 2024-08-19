@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+qrcode[support-pil]
+sqlalchemy
+fastapi-mail
+python-dotenv
+alembic
+jinja2
+pyjwt
+passlib
