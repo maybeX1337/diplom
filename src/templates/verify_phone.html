@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
+    <title>Verify Phone</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,22 +49,17 @@
 </head>
 <body>
     <div class="container">
-        <h2>Регистрация</h2>
-        <form action="/client/registration" method="POST">
+        <h2>Verify Phone</h2>
+        {% if error %}
+        <p style="color:red">{{ error }}</p>
+        {% endif %}
+        <form action="/client/verify_phone" method="POST">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="code">Verification Code:</label>
+                <input type="number" id="code" name="code" required>
             </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-        <p>{{error}}</p>
-        <form action="/client/log" method="GET">
-
-            <button type="submit">Вход</button>
+            <input type="hidden" name="phone" value="{{ phone }}">
+            <button type="submit">Verify</button>
         </form>
     </div>
 </body>

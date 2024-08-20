@@ -30,7 +30,6 @@ class ClientCreateResponse(BaseModel):
 
 
 class DetailsForm(BaseModel):
-    email: EmailStr
     phone: StrictStr
 
     @validator('phone')

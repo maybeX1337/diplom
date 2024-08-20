@@ -31,6 +31,10 @@ class Client(Base):
     phone = Column(String, nullable=True, default=lambda: nll())
     is_admin = Column(Boolean, nullable=True, default=lambda: fls())
     is_active = Column(Boolean, default=True)
+    is_banned = Column(Boolean, default=False)
+    is_confirmed = Column(Boolean, default=False)
+
+    email_confirmation = relationship("EmailConfirmation", back_populates="client", uselist=False)
 
 
 class ApartmentClient(Base):
@@ -40,3 +44,13 @@ class ApartmentClient(Base):
     apartment_id = Column(Integer, ForeignKey('apartment.id'), primary_key=True)
     client_id = Column(Integer, ForeignKey('client.id'), primary_key=True)
     confirmed = Column(Boolean, default=lambda: fls())
+
+
+class EmailConfirmation(Base):
+    __tablename__ = "email_confirmations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('client.id'))
+    confirmation_code = Column(String, nullable=False)
+
+    client = relationship("Client", back_populates="email_confirmation")

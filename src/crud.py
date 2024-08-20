@@ -1,7 +1,8 @@
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from src.database import models, schemas
-
+from sqlalchemy.orm import Session
+import random
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -46,3 +47,48 @@ def get_client_by_email(db: Session, email: str):
 
 def get_client_by_id(db: Session, id: int):
     return db.query(models.Client).filter(models.Client.id == id).first()
+
+def ban_client(db: Session, client_id: int):
+    client = db.query(models.Client).filter(models.Client.id == client_id).first()
+    if client:
+        client.is_banned = True
+        db.commit()
+    return client
+
+def delete_client(db: Session, client_id: int):
+    client = db.query(models.Client).filter(models.Client.id == client_id).first()
+    if client:
+        db.delete(client)
+        db.commit()
+    return client
+
+
+
+def generate_confirmation_code() -> str:
+    return str(random.randint(100000, 999999))
+
+def save_confirmation_code(db: Session, user_id: int, code: str):
+    confirmation = db.query(models.EmailConfirmation).filter(models.EmailConfirmation.user_id == user_id).first()
+    if confirmation:
+        confirmation.confirmation_code = code
+    else:
+        confirmation = models.EmailConfirmation(user_id=user_id, confirmation_code=code)
+        db.add(confirmation)
+    db.commit()
+
+def check_confirmation_code(db: Session, user_id: int, code: str) -> bool:
+    confirmation = db.query(models.EmailConfirmation).filter(models.EmailConfirmation.user_id == user_id, models.EmailConfirmation.confirmation_code == code).first()
+    return confirmation is not None
+
+def confirm_email(db: Session, user_id: int):
+    user = db.query(models.Client).filter(models.Client.id == user_id).first()
+    if user:
+        user.is_confirmed = True
+        db.commit()
+
+def get_client_by_phone(db: Session, phone: str):
+    client = db.query(models.Client).filter(models.Client.phone == phone).first()
+    if client:
+        return True
+    else:
+        return False

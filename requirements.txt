@@ -9,3 +9,6 @@ alembic
 jinja2
 pyjwt
 passlib
+psycopg2-binary
+python-multipart
+fastapi[standard]

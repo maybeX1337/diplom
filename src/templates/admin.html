@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Admin Panel - User Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,44 +20,79 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input {
+        table {
             width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
         }
         button {
             background-color: #007BFF;
             color: #fff;
             border: none;
-            padding: 10px;
+            padding: 8px;
             cursor: pointer;
-            width: 100%;
             border-radius: 4px;
         }
         button:hover {
             background-color: #0056b3;
         }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Profile</h2>
-        {%for i in data%}
-          <p>{{i.email}}</p>
-          <p>{{i.phone}}</p>
-          <p>Актив:{{i.is_active}}</p>
-        <p>{{i.is_admin}}</p>
-          <br>
-          <br>
-        {%endfor%}
+        <h2>Admin Panel - User Management</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Confirm</th>
+                    <th>Admin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in data %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone if user.phone else 'Not provided' }}</td>
+                    <td>{{ 'Yes' if user.is_confirmed else 'No' }}</td>
+                    <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+                    <td>
+                        {% if not user.is_banned %}
+                        <form action="/admin/ban/{{ user.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-danger">Ban</button>
+                        </form>
+                        {% else %}
+                        <button disabled>Banned</button>
+                        {% endif %}
+                        <form action="/admin/delete/{{ user.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <form action="/" method="GET">
             <button type="submit">Back</button>
         </form>

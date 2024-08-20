@@ -45,20 +45,57 @@
         button:hover {
             background-color: #0056b3;
         }
+        .email-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .email-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .email-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .email-unconfirmed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Profile</h2>
-          <p>{{data.email}}</p>
-          <p>{{data.phone}}</p>
-        {% if data.phone == None %}
-        <form action="/client/add_phone" method="GET">
+        <div class="email-container">
+            <p>Email: {{ data.email }}</p>
+            <p class="email-status {% if data.is_confirmed %}email-confirmed{% else %}email-unconfirmed{% endif %}">
+                {% if data.is_confirmed %}
+                    Confirmed
+                {% else %}
+                    Not Confirmed
+                <form action="/confirm/send_confirmation_code" method="POST">
+
+                    <button type="submit">Подтвердить</button>
+                </form>
+                {% endif %}
+            </p>
+
+        </div>
+        <p>Phone: {{ data.phone }}</p>
+        {% if not data.phone %}
+        <form action="/add/add_phone" method="GET">
             <button type="submit">Добавить номер</button>
         </form>
         {% endif %}
+        <br>
         <form action="/" method="GET">
             <button type="submit">Back</button>
+        </form>
+        <form action="/client/logout" method="POST">
+            <button type="submit">LogOut</button>
         </form>
     </div>
 </body>

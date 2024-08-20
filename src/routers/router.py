@@ -1,52 +1,30 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi_mail import MessageSchema, FastMail
 from sqlalchemy.orm import Session
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
-
-from src.database.database import get_db
+from typing import Annotated
 from src import crud
-from src.config import conf
-from fastapi import APIRouter, Depends, Request, Form
-from pydantic import ValidationError
-from sqlalchemy.orm import Session
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
-import qrcode
-from fastapi_mail import FastMail, MessageSchema
-
-from src.database import models
-from src.database.schemas import DetailsForm
+from src.database import schemas, models
+import datetime
+import jwt
+from fastapi import APIRouter, Path, Query, Body, Depends, HTTPException, Response, Cookie, Form, Request
 from src.database.database import get_db
-from src import crud
-from src.config import conf, HOST_PORT
+from src.dependencies import check_auth
+from passlib.context import CryptContext
+from src.config import SECRET_KEY, conf
+from fastapi.templating import Jinja2Templates
 
-router = APIRouter()
+router = APIRouter(prefix="/all", tags=["all"])
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 templates = Jinja2Templates(directory=conf.TEMPLATE_FOLDER)
 
+@router.get("/", dependencies=[Depends(check_auth)])
+async def client_login(request: Request):
+    return templates.TemplateResponse("login.html",
+                                      {"request": request})
 
 
-# @router.get("/view_apartment/{apartment_uuid}", response_class=HTMLResponse)
-# async def view_apartment(request: Request, apartment_uuid: str, db: Session = Depends(get_db)):
-#     apartment = crud.get_apartment_by_uuid(db, apartment_uuid)
-#     if not apartment:
-#         return templates.TemplateResponse("view_apartment.html", {"request": request, "address": "Apartment not found"})
-#         # raise HTTPException(status_code=404, detail="Apartment not found")
-#     return templates.TemplateResponse("view_apartment.html", {"request": request, "address": apartment.address})
-
-# @router.post("/view_wishlist", response_class=HTMLResponse)
-# async def enter_details_form(request: Request, email: str = Form(...), db: Session = Depends(get_db)):
-#     user = get_user_by_email(db, email)
-#     apart = []
-#     if user:
-#         apartment_user = get_apartment_user_by_id(db, user.id)
-#         if apartment_user:
-#             for i in apartment_user:
-#                 apartment = get_apartment_user_by_id_first(db, i.apartment_id)
-#                 apart.append(apartment.address)
-#
-#     return templates.TemplateResponse("view_wishlist.html", {"request": request, "wishlist": apart})
-
-
-# router.get("/wishlist", response_class=HTMLResponse)
-# async def enter_details_form(request: Request):
-#     return templates.TemplateResponse("wishlist.html", {"request": request})
+@router.get("/log")
+async def client_login(request: Request):
+    return templates.TemplateResponse("login.html",
+                                      {"request": request})

@@ -51,13 +51,14 @@
     <div class="container">
         <h2>Add Phone</h2>
 
-        <form action="/client/add_phone" method="POST">
+        <form action="/add/add_phone" method="POST">
             <div class="form-group">
                 <label for="phone">Phone:</label>
                 <input type="tel" id="phone" name="phone" required>
             </div>
             <button type="submit">Добавить номер</button>
         </form>
+        <p>{{errors}}</p>
 
     </div>
 </body>

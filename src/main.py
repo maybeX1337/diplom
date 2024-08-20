@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi import APIRouter, Path, Query, Body, Depends, HTTPException, Request, Response, Cookie
-from src.routers import client_router
+from src.routers import client_router, add_router, confirm_router, admin_router, router
 from src.database.models import Base
 from src.database.database import engine
 from fastapi.staticfiles import StaticFiles
@@ -20,6 +20,10 @@ Base.metadata.create_all(bind=engine)
 
 
 app.include_router(client_router.router)
+app.include_router(add_router.router)
+app.include_router(confirm_router.router)
+app.include_router(admin_router.router)
+app.include_router(router.router)
 
 
 
