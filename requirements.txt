@@ -12,3 +12,4 @@ passlib
 psycopg2-binary
 python-multipart
 fastapi[standard]
+starlette

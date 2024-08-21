@@ -1,16 +1,20 @@
 import datetime
+from crypt import methods
+
 import jwt
 from fastapi import APIRouter, Path, Query, Body, Depends, HTTPException, Response, Cookie, Form, Request
 from fastapi_mail import MessageSchema, FastMail
 from sqlalchemy.orm import Session
 from typing import Annotated
 from src import crud
+from fastapi.responses import RedirectResponse
 from src.database import schemas, models
 from src.database.database import get_db
 from src.dependencies import check_auth
 from passlib.context import CryptContext
 from src.config import SECRET_KEY, conf
 from fastapi.templating import Jinja2Templates
+from starlette.status import HTTP_302_FOUND,HTTP_303_SEE_OTHER
 
 router = APIRouter(prefix="/client", tags=["client"])
 
@@ -34,8 +38,7 @@ async def registration(request: Request, email: str = Form(...), password: str =
                                           {"request": request, "error": "Client with this email already registered"})
         # raise HTTPException(status_code=400, detail="Client with this email already registered")
     crud.create_client(db=db, email=email, password=password)
-    return templates.TemplateResponse("login.html",
-                                      {"request": request})
+    return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
 
 
 @router.post("/login")

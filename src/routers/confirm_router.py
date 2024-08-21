@@ -4,6 +4,8 @@ from fastapi import APIRouter, Path, Query, Body, Depends, HTTPException, Respon
 from fastapi_mail import MessageSchema, FastMail
 from sqlalchemy.orm import Session
 from typing import Annotated
+from starlette.status import HTTP_302_FOUND,HTTP_303_SEE_OTHER
+from fastapi.responses import RedirectResponse
 from src import crud
 from src.database import schemas, models
 from src.database.database import get_db
@@ -40,8 +42,7 @@ async def send_confirmation_code(request: Request, db: Session = Depends(get_db)
     fm = FastMail(conf)
     await fm.send_message(message)
 
-    return templates.TemplateResponse("confirm_email.html",
-                                      {"request": request})
+    return RedirectResponse("/confirm_email", status_code=HTTP_303_SEE_OTHER)
 
 
 
@@ -56,7 +57,6 @@ async def verify_confirmation_code(request: Request, code: str = Form(...), db: 
     is_valid = crud.check_confirmation_code(db, user.id, code)
     if is_valid:
         crud.confirm_email(db, user.id)
-        return templates.TemplateResponse("profile.html",
-                                          {"request": request, "data": user})
+        return RedirectResponse("/client/profile", status_code=HTTP_303_SEE_OTHER)
     else:
         raise HTTPException(status_code=400, detail="Invalid confirmation code")

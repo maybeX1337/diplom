@@ -18,10 +18,9 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 templates = Jinja2Templates(directory=conf.TEMPLATE_FOLDER)
 
-@router.get("/", dependencies=[Depends(check_auth)])
-async def client_login(request: Request):
-    return templates.TemplateResponse("login.html",
-                                      {"request": request})
+
+
+
 
 
 @router.get("/log")

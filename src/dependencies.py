@@ -38,5 +38,23 @@ async def check_auth(request: Request, response: Response):
     elif access is None and refresh is None:
         raise HTTPException(status_code=403, detail="Not authorized, login required")
 
+    elif access:
+        try:
+            payload = jwt.decode(access, str(SECRET_KEY), algorithms=["HS256"])
+            db: Session = next(get_db())
+            client = crud.read_client(db, payload["id"])
+
+            if client is None or client.is_banned:
+                # Удаление куки и отправка на страницу логина
+                response.delete_cookie("access")
+                response.delete_cookie("refresh")
+
+                raise HTTPException(status_code=403, detail="Your account has been banned or deleted.")
+
+        except jwt.ExpiredSignatureError:
+            return templates.TemplateResponse("login.html", {"request": request, "error": "Token expired"})
+        except jwt.InvalidTokenError:
+            return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid token"})
+
     # Optionally return some value or None
     return None

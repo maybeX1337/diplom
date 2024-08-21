@@ -9,6 +9,7 @@ from src.config import conf
 from fastapi.templating import Jinja2Templates
 from src.dependencies import check_auth
 from typing import Annotated
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -25,13 +26,36 @@ app.include_router(confirm_router.router)
 app.include_router(admin_router.router)
 app.include_router(router.router)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-
-@app.get("/", dependencies=[Depends(check_auth)])
+@app.get("/")
 async def client(request: Request):
     access = request.cookies.get("access")
     if access:
         return templates.TemplateResponse("home.html", {"request": request})
     else:
         return templates.TemplateResponse("registration.html",
+                                      {"request": request})
+
+
+@app.get("/confirm_email", dependencies=[Depends(check_auth)])
+async def client_login(request: Request):
+    return templates.TemplateResponse("confirm_email.html",
+                                      {"request": request})
+
+
+@app.get("/re", dependencies=[Depends(check_auth)])
+async def client_login(request: Request):
+    return {"request": "reeeee"}
+
+
+@app.get("/login")
+async def client_login(request: Request):
+    return templates.TemplateResponse("login.html",
                                       {"request": request})

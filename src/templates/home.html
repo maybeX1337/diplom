@@ -6,8 +6,8 @@
     <title>Home</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,44 +16,134 @@
             height: 100vh;
         }
         .container {
+            position: relative;
             background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input {
+            padding: 30px;
+            max-width: 400px;
             width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
-        button {
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
+        h2 {
+            margin-bottom: 20px;
+            color: #343a40;
+            text-align: center;
+        }
+        .accordion {
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .accordion h3 {
+            background-color: #f8f9fa;
+            margin: 0;
             padding: 10px;
             cursor: pointer;
-            width: 100%;
-            border-radius: 4px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
         }
-        button:hover {
-            background-color: #0056b3;
+        .accordion h3::before {
+            content: '▶';
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+        .panel {
+            max-height: 0;
+            overflow: hidden;
+            border: 1px solid #ced4da;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0;
+        }
+        .panel.show {
+            padding: 10px;
+            max-height: 150px; /* Adjust based on content */
+        }
+        .panel input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .panel button {
+            background-color: #90EE90;
+            color: #030202;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .panel button:hover {
+            background-color: #8B0000;
+            color: #fff;
+        }
+        button.profile-btn {
+            background-color: #90EE90;
+            color: #030202;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button.profile-btn:hover {
+            background-color: #8B0000;
+            color: #fff;
+        }
+        .accordion.active h3::before {
+            transform: rotate(90deg);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Search</h2>
+        <div class="accordion">
+            <h3>По названию</h3>
+            <div class="panel">
+                <form action="/search/name" method="GET">
+                    <input type="text" name="name" placeholder="Введите название">
+                    <button type="submit">Найти</button>
+                </form>
+            </div>
+        </div>
+        <div class="accordion">
+            <h3>По ИНН</h3>
+            <div class="panel">
+                <form action="/search/inn" method="GET">
+                    <input type="text" name="inn" placeholder="Введите ИНН">
+                    <button type="submit">Найти</button>
+                </form>
+            </div>
+        </div>
         <form action="/client/profile" method="GET">
-
-            <button type="submit">Профиль</button>
+            <button type="submit" class="profile-btn">Профиль</button>
         </form>
     </div>
+    <script>
+        document.querySelectorAll('.accordion').forEach(function(accordion) {
+            let header = accordion.querySelector('h3');
+            let panel = accordion.querySelector('.panel');
+
+            header.addEventListener('click', function() {
+                accordion.classList.toggle('active');
+                if (accordion.classList.contains('active')) {
+                    panel.classList.add('show');
+                } else {
+                    panel.classList.remove('show');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

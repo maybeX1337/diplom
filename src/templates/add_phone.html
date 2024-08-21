@@ -6,8 +6,8 @@
     <title>Add Phone</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,49 +17,70 @@
         }
         .container {
             background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            position: relative;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #343a40;
+            text-align: center;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-bottom: 5px;
+            color: #495057;
         }
         input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
             box-sizing: border-box;
         }
         button {
-            background-color: #007BFF;
-            color: #fff;
+            background-color: #90EE90;
+            color: #030202;
             border: none;
             padding: 10px;
             cursor: pointer;
             width: 100%;
             border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #8B0000;
+        }
+        .back-button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Add Phone</h2>
-
+        <h2>Добавить номер</h2>
         <form action="/add/add_phone" method="POST">
             <div class="form-group">
-                <label for="phone">Phone:</label>
+                <label for="phone">Телефон:</label>
                 <input type="tel" id="phone" name="phone" required>
             </div>
             <button type="submit">Добавить номер</button>
         </form>
         <p>{{errors}}</p>
-
+        <br>
+        <br>
+        <form class="back-button" action="/client/profile" method="GET">
+            <button type="submit">Назад</button>
+        </form>
     </div>
 </body>
 </html>

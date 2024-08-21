@@ -27,5 +27,5 @@ conf = ConnectionConfig(
     MAIL_STARTTLS=True,
     MAIL_SSL_TLS=False,
     TEMPLATE_FOLDER="src/templates",
-    MAIL_FROM_NAME="mayak.fun"
+    MAIL_FROM_NAME="ServiceForCheckCompany"
 )
