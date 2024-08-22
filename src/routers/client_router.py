@@ -67,9 +67,10 @@ async def login(request: Request, response: Response, email: str = Form(...), pa
     # Encode the JWT
     access = jwt.encode(payload_access, str(SECRET_KEY), algorithm="HS256")
     refresh = jwt.encode(payload_refresh, str(SECRET_KEY), algorithm="HS256")
+    response = RedirectResponse("/", status_code=HTTP_303_SEE_OTHER)
     response.set_cookie(key="access", value=access, httponly=True, max_age=1800)
     response.set_cookie(key="refresh", value=refresh, httponly=True, max_age=2592000)
-    return access, refresh
+    return response
 
 
 @router.post("/logout")
@@ -78,9 +79,10 @@ async def logout(response: Response, access: Annotated[str, Cookie()] = None, re
     payload = jwt.decode(access, str(SECRET_KEY), algorithms=["HS256"])
     client = crud.read_client(db, payload["id"])
     crud.update_client(db, client.email, False)
+    response = RedirectResponse("/", status_code=HTTP_303_SEE_OTHER)
     response.delete_cookie("access")
     response.delete_cookie("refresh")
-    return {"message": "successful logout"}
+    return response
 
 
 @router.get("/profile", dependencies=[Depends(check_auth)])
@@ -94,8 +96,7 @@ async def profile(request: Request, response: Response, access: Annotated[str, C
             return templates.TemplateResponse("profile.html",
                                               {"request": request, "data": client})
         except:
-            return templates.TemplateResponse("login.html",
-                                              {"request": request})
+            return RedirectResponse("/login")
     else:
         pass
 

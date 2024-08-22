@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
+    <title>Home</title>
     <!-- Подключение Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -73,36 +72,38 @@
             background-color: #0052cc;
         }
 
-        p {
-            color: #d9534f;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-
         .form-group:last-of-type {
             margin-bottom: 0;
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <h2>Вход</h2>
-        <form action="/client/login" method="POST">
+        <h2>Search</h2>
+        <form action="/search/inn" method="POST">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="inn"></label>
+                <input type="text" id="inn" name="inn" placeholder="Введите ИНН" required>
             </div>
             <br>
-            <button type="submit">Войти</button>
+            <button type="submit">Найти</button>
         </form>
-        <p>{{error}}</p>
-        <a class="nav-link" href="/registration">Зарегистрироваться</a>
+        <p>Адрес: {{company.address}}</p>
+        <p>Оценка: {{company.rating}}</p>
+        <p>Отрасль: {{company.industry}}</p>
+        <p>Телефон: {{company.phone}}</p>
+        <p>Сайт: {{company.website}}</p>
+
+        <br>
+        <p>_______________________________________</p>
+        {%for i in arbitration%}
+
+        <p>Партнер: {{i.company_id_partner}}</p>
+        <p>Общая сумма: {{i.total_sum}}</p>
+        <p>Описание: {{i.short_description}}</p>
+        <br>
+        {%endfor%}
+
     </div>
 </body>
-
 </html>

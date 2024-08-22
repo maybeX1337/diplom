@@ -1,149 +1,488 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>CompanyFinder</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Подключение Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Пользовательские стили -->
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e9ecef;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
-        .container {
-            position: relative;
-            background-color: #fff;
-            padding: 30px;
-            max-width: 400px;
-            width: 100%;
+
+        /* Навигационная панель */
+        .navbar {
+            padding: 20px 40px;
+            background: linear-gradient(90deg, #0066ff, #00ccff);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
         }
-        h2 {
-            margin-bottom: 20px;
-            color: #343a40;
-            text-align: center;
-        }
-        .accordion {
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        .accordion h3 {
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            border: 1px solid #ced4da;
+
+        .navbar-brand {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff !important;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 18px;
         }
-        .accordion h3::before {
-            content: '▶';
-            transition: transform 0.3s ease;
+
+        .navbar-brand img {
+            height: 50px;
             margin-right: 10px;
         }
-        .panel {
-            max-height: 0;
-            overflow: hidden;
-            border: 1px solid #ced4da;
-            border-top: none;
-            border-radius: 0 0 5px 5px;
-            transition: max-height 0.3s ease, padding 0.3s ease;
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            font-size: 16px;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #d1ecf1 !important;
+        }
+
+
+        /* Гамбургер-меню */
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"%3E%3Cpath stroke="%23fff" stroke-width="2" d="M5 7h20M5 15h20M5 23h20"/%3E%3C/svg%3E');
+        }
+
+        /* Главный контейнер */
+        .container {
+            margin-top: 60px;
+            padding: 60px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .container p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .container ul {
+            list-style-type: none;
             padding: 0;
+            margin-bottom: 40px;
         }
-        .panel.show {
-            padding: 10px;
-            max-height: 150px; /* Adjust based on content */
-        }
-        .panel input {
-            width: calc(100% - 20px);
-            padding: 8px;
+
+        .container ul li {
+            font-size: 18px;
             margin-bottom: 10px;
-            box-sizing: border-box;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
         }
-        .panel button {
-            background-color: #90EE90;
-            color: #030202;
+
+        .container ul li::before {
+            content: '\2713';
+            color: #00ccff;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Поисковая строка */
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar .form-control {
+            padding: 20px;
+            font-size: 18px;
+            border-radius: 50px 0 0 50px;
             border: none;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar .btn {
+            padding: 10px 30px;
+            background-color: #0066ff;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 0 50px 50px 0;
+            border: none;
             transition: background-color 0.3s ease;
         }
-        .panel button:hover {
-            background-color: #8B0000;
-            color: #fff;
+
+        .search-bar .btn:hover {
+            background-color: #0052cc;
         }
-        button.profile-btn {
-            background-color: #90EE90;
-            color: #030202;
+
+        /* Анимации */
+        .container h2,
+        .container p,
+        .container ul,
+        .search-bar {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .container h2 {
+            animation-delay: 0.2s;
+        }
+
+        .container p {
+            animation-delay: 0.4s;
+        }
+
+        .container ul {
+            animation-delay: 0.6s;
+        }
+
+        .search-bar {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Секции подписок */
+        .subscriptions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .subscription-card {
+            background-color: #f8f9fa;
+            border: 2px solid #0066ff;
+            border-radius: 15px;
+            width: 45%;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .subscription-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .subscription-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .subscription-price {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #0066ff;
+        }
+
+        .subscription-features {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .subscription-btn {
+            padding: 12px 30px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 50px;
             border: none;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
             transition: background-color 0.3s ease;
-            margin-top: 20px;
         }
-        button.profile-btn:hover {
-            background-color: #8B0000;
+
+        .subscription-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Футер */
+        .footer {
+            background-color: #003366;
             color: #fff;
+            padding: 95px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
         }
-        .accordion.active h3::before {
-            transform: rotate(90deg);
+
+        .footer h5 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: #00ccff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #004080;
+            padding: 0px 0;
+            margin-bottom: -90px;
+
+        }
+        .container-down {
+            margin-top: -90px;
+            padding: 20px;
+            background-color: #003366;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .down-text {
+            margin-top: 15px;
+        }
+
+
+        /* Медиа-запросы для мобильных устройств */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar-brand {
+                font-size: 20px;
+            }
+
+            .navbar-nav {
+                margin-left: 0;
+                margin-top: 10px;
+                text-align: center;
+            }
+
+            .navbar-nav .nav-link {
+                font-size: 14px;
+                margin-left: 10px;
+                display: block;
+            }
+
+            .container {
+                padding: 30px;
+            }
+
+            .container h2 {
+                font-size: 28px;
+            }
+
+            .container p {
+                font-size: 16px;
+            }
+
+            .container ul li {
+                font-size: 16px;
+            }
+
+            .search-bar .form-control {
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            .search-bar .btn {
+                padding: 8px 20px;
+                font-size: 16px;
+            }
+
+            .subscriptions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .subscription-card {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .subscription-title {
+                font-size: 24px;
+            }
+
+            .subscription-price {
+                font-size: 30px;
+            }
+
+            .subscription-features {
+                font-size: 16px;
+            }
+
+            .subscription-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Search</h2>
-        <div class="accordion">
-            <h3>По названию</h3>
-            <div class="panel">
-                <form action="/search/name" method="GET">
-                    <input type="text" name="name" placeholder="Введите название">
-                    <button type="submit">Найти</button>
-                </form>
-            </div>
-        </div>
-        <div class="accordion">
-            <h3>По ИНН</h3>
-            <div class="panel">
-                <form action="/search/inn" method="GET">
-                    <input type="text" name="inn" placeholder="Введите ИНН">
-                    <button type="submit">Найти</button>
-                </form>
-            </div>
-        </div>
-        <form action="/client/profile" method="GET">
-            <button type="submit" class="profile-btn">Профиль</button>
-        </form>
-    </div>
-    <script>
-        document.querySelectorAll('.accordion').forEach(function(accordion) {
-            let header = accordion.querySelector('h3');
-            let panel = accordion.querySelector('.panel');
 
-            header.addEventListener('click', function() {
-                accordion.classList.toggle('active');
-                if (accordion.classList.contains('active')) {
-                    panel.classList.add('show');
-                } else {
-                    panel.classList.remove('show');
-                }
-            });
-        });
-    </script>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">
+            <img src="https://via.placeholder.com/50" alt="Логотип">
+            CompanyFinder
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item1">
+                    <a class="nav-link" href="/client/profile">Профиль</a>
+                </li>
+                <li class="nav-item2">
+                    <a class="nav-link" href="/check_company">Проверка</a>
+                </li>
+                {%if data == True%}
+                <li class="nav-item">
+                    <form action="/client/logout" method="POST">
+                <button type="submit" style="background-color: rgba(255, 255, 255, 0); border: none; outline: none; color: white;">Выйти</button>
+                    </form>
+                </li>
+                {%else%}
+                <li class="nav-item">
+
+                    <a class="nav-link" href="/registration">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Вход</a>
+                </li>
+                {%endif%}
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <h2>Добро пожаловать в CompanyFinder</h2>
+        <p>
+            CompanyFinder – это передовой сервис для поиска информации о компаниях. Наш сайт поможет вам найти актуальную и достоверную информацию о любой компании. Будь то оценка репутации, контактные данные или данные о финансовой стабильности, наш сервис предоставляет вам все необходимые инструменты для принятия взвешенных решений.
+        </p>
+        <ul>
+            <li>Достоверные данные от проверенных источников.</li>
+            <li>Удобный и быстрый поиск.</li>
+            <li>Поддержка 24/7 для наших пользователей.</li>
+            <li>Интуитивно понятный интерфейс.</li>
+        </ul>
+
+        <br>
+
+        <!-- Секции подписок -->
+        <h2 class="mt-5">Наши подписки</h2>
+        <div class="subscriptions">
+            <!-- Базовая подписка -->
+            <div class="subscription-card">
+                <h3 class="subscription-title">{{subscribe[0].title}}</h3>
+                <p class="subscription-price">₽{{subscribe[0].price}}/мес</p>
+                <ul class="subscription-features">
+                    <li>Поиск по компаниям в России</li>
+                    <li>Доступ к основным данным компании</li>
+                    <li>История изменений компании</li>
+                    <li>Уведомления о новых данных</li>
+                </ul>
+                <form action="/buy/subscribe/1" method="GET">
+                    <button class="subscription-btn" type="submit">Купить</button>
+                </form>
+
+            </div>
+            <!-- Премиум подписка -->
+            <div class="subscription-card">
+                <h3 class="subscription-title">{{subscribe[1].title}}</h3>
+                <p class="subscription-price">₽{{subscribe[1].price}}/мес</p>
+                <ul class="subscription-features">
+                    <li>Поиск по компаниям по всему миру</li>
+                    <li>Расширенные финансовые отчеты</li>
+                    <li>Доступ к контактным данным высшего руководства</li>
+                    <li>Аналитика и прогнозы по рынку</li>
+                </ul>
+                <form action="/buy/subscribe/2" method="GET">
+                    <button class="subscription-btn" type="submit">Купить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container-down">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>О нас</h5>
+                    <p>CompanyFinder — это передовой сервис для поиска информации о компаниях, предоставляющий актуальные данные и аналитику для принятия взвешенных решений.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Полезные ссылки</h5>
+                    <ul>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                        <li><a href="#">Условия использования</a></li>
+                        <li><a href="#">Часто задаваемые вопросы</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Контакты</h5>
+                    <p>Email: <a href="mailto:info@companyfinder.ru">info@companyfinder.ru</a></p>
+                    <p>Телефон: +7 (123) 456-7890</p>
+                    <p>Адрес: Москва, ул. Примерная, д. 1</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p class="down-text">&copy; 2024 CompanyFinder. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Подключение Bootstrap JS и Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

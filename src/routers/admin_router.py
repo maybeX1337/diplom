@@ -5,6 +5,8 @@ from fastapi_mail import MessageSchema, FastMail
 from sqlalchemy.orm import Session
 from typing import Annotated
 from src import crud
+from fastapi.responses import RedirectResponse
+from starlette.status import HTTP_302_FOUND,HTTP_303_SEE_OTHER
 from src.database import schemas, models
 from src.database.database import get_db
 from src.dependencies import check_auth
@@ -50,8 +52,21 @@ async def ban_user(request: Request, response: Response, client_id: int,
     if admin_client.is_admin:
         client = crud.ban_client(db, client_id)
         if client:
-            return {"message": f"User {client.email} banned successfully"}
-    return templates.TemplateResponse("home.html", {"request": request})
+            return RedirectResponse("/admin/list", status_code=HTTP_303_SEE_OTHER)
+    return RedirectResponse("/", status_code=HTTP_303_SEE_OTHER)
+
+
+@router.post("/unban/{client_id}")
+async def ban_user(request: Request, response: Response, client_id: int,
+                   db: Session = Depends(get_db), access: Annotated[str, Cookie()] = None):
+    payload = jwt.decode(access, str(SECRET_KEY), algorithms=["HS256"])
+    admin_client = crud.read_client(db, payload["id"])
+
+    if admin_client.is_admin:
+        client = crud.unban_client(db, client_id)
+        if client:
+            return RedirectResponse("/admin/list", status_code=HTTP_303_SEE_OTHER)
+    return RedirectResponse("/", status_code=HTTP_303_SEE_OTHER)
 
 
 @router.post("/delete/{client_id}")

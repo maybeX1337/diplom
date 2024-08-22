@@ -1,70 +1,103 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Phone</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e9ecef;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(90deg, #0066ff, #00ccff);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #333;
         }
+
         .container {
             background-color: #fff;
             padding: 30px;
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
             position: relative;
         }
+
         h2 {
-            margin-bottom: 20px;
-            color: #343a40;
+            margin-bottom: 25px;
+            color: #333;
             text-align: center;
+            font-size: 24px;
+            font-weight: 700;
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             color: #495057;
+            font-size: 15px;
+            font-weight: 500;
         }
+
         input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ced4da;
-            border-radius: 4px;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 16px;
         }
+
         button {
-            background-color: #90EE90;
-            color: #030202;
+            background: transparent;
+            color: #007bff;
             border: none;
             padding: 10px;
             cursor: pointer;
             width: 100%;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 16px;
-            transition: background-color 0.3s ease;
+            transition: color 0.3s ease;
         }
+
         button:hover {
-            background-color: #8B0000;
+            color: #0056b3;
         }
+
         .back-button {
             position: absolute;
             bottom: 20px;
             left: 20px;
         }
+
+        .back-button button {
+            width: auto;
+            padding: 0;
+            color: #007bff;
+            font-size: 14px;
+        }
+
+        .back-button button:hover {
+            color: #0056b3;
+        }
+
+        p {
+            color: #dc3545;
+            text-align: center;
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Добавить номер</h2>
@@ -76,11 +109,10 @@
             <button type="submit">Добавить номер</button>
         </form>
         <p>{{errors}}</p>
-        <br>
-        <br>
         <form class="back-button" action="/client/profile" method="GET">
             <button type="submit">Назад</button>
         </form>
     </div>
 </body>
+
 </html>

@@ -1,64 +1,91 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Phone</title>
+    <title>Confirm Email</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(90deg, #0066ff, #00ccff);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #333;
         }
+
         .container {
             background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
         }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-align: left;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
+            color: #495057;
+            font-size: 15px;
+            font-weight: 500;
         }
+
         input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 16px;
         }
+
         button {
-            background-color: #007BFF;
-            color: #fff;
+            background: transparent;
+            color: #007bff;
             border: none;
             padding: 10px;
             cursor: pointer;
             width: 100%;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: color 0.3s ease;
         }
+
         button:hover {
-            background-color: #0056b3;
+            color: #0056b3;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h2>Add Phone</h2>
-
+        <h2>Подтвердить Email</h2>
         <form action="/confirm/verify_confirmation_code" method="POST">
             <div class="form-group">
-                <label for="code">Email:</label>
+                <label for="code">Код подтверждения:</label>
                 <input type="text" id="code" name="code" required>
             </div>
-            <button type="submit">Confirm Email</button>
+            <button type="submit">Подтвердить Email</button>
         </form>
-
     </div>
 </body>
+
 </html>

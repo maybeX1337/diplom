@@ -27,6 +27,12 @@ def create_client(db: Session, email: str, password: str):
     db.refresh(db_client)
     return db_client
 
+def create_client_subscribe(db: Session, client_id: int, subscribe_id: int):
+    db_client_subscribe = models.Client_Subscribe(client_id=client_id, subscribe_id=subscribe_id)
+    db.add(db_client_subscribe)
+    db.commit()
+    db.refresh(db_client_subscribe)
+    return db_client_subscribe
 
 def update_client(db: Session, email: str, active: bool):
     client_db = db.query(models.Client).filter(models.Client.email == email).first()
@@ -48,10 +54,23 @@ def get_client_by_email(db: Session, email: str):
 def get_client_by_id(db: Session, id: int):
     return db.query(models.Client).filter(models.Client.id == id).first()
 
+
+def get_subscribe_by_id(db: Session, id: int):
+    return db.query(models.Subscribe).filter(models.Subscribe.id == id).first()
+
+def get_subscribe(db: Session):
+    return db.query(models.Subscribe).all()
+
 def ban_client(db: Session, client_id: int):
     client = db.query(models.Client).filter(models.Client.id == client_id).first()
     if client:
         client.is_banned = True
+        db.commit()
+    return client
+def unban_client(db: Session, client_id: int):
+    client = db.query(models.Client).filter(models.Client.id == client_id).first()
+    if client:
+        client.is_banned = False
         db.commit()
     return client
 
@@ -92,3 +111,32 @@ def get_client_by_phone(db: Session, phone: str):
         return True
     else:
         return False
+
+def check_client_subscribe(db: Session, id: int):
+    client = db.query(models.Client_Subscribe).filter(models.Client_Subscribe.client_id == id).first()
+    if client:
+        return True
+    else:
+        return False
+
+
+def create_company(db: Session, inn: str, address: str, rating: str, industry: str, phone: str, website: str):
+    db_company = models.Company(inn=inn, address=address, rating=rating, industry=industry, phone=phone, website=website)
+    db.add(db_company)
+    db.commit()
+    db.refresh(db_company)
+    return db_company
+
+def create_arbitration(db: Session, company_id: int, company_id_partner: int, total_sum: int, short_description: str):
+    db_arbitration = models.Arbitration(company_id=company_id, company_id_partner=company_id_partner, total_sum=total_sum, short_description=short_description)
+    db.add(db_arbitration)
+    db.commit()
+    db.refresh(db_arbitration)
+    return db_arbitration
+
+
+def get_company_by_inn(db: Session, inn: str):
+    return db.query(models.Company).filter(models.Company.inn == inn).first()
+
+def get_arbitration_by_id_company(db: Session, id: int):
+    return db.query(models.Arbitration).filter(models.Arbitration.company_id == id).all()

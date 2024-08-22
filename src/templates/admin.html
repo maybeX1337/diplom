@@ -83,7 +83,9 @@
                             <button type="submit" class="btn-danger">Ban</button>
                         </form>
                         {% else %}
-                        <button disabled>Banned</button>
+                        <form action="/admin/unban/{{ user.id }}" method="POST" style="display:inline;">
+                            <button style="background-color: blue;" type="submit" class="btn-danger">Banned</button>
+                        </form>
                         {% endif %}
                         <form action="/admin/delete/{{ user.id }}" method="POST" style="display:inline;">
                             <button type="submit" class="btn-danger">Delete</button>
