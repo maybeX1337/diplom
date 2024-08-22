@@ -120,8 +120,8 @@ def check_client_subscribe(db: Session, id: int):
         return False
 
 
-def create_company(db: Session, inn: str, address: str, rating: str, industry: str, phone: str, website: str):
-    db_company = models.Company(inn=inn, address=address, rating=rating, industry=industry, phone=phone, website=website)
+def create_company(db: Session, inn: str, name: str, address: str, rating: str, industry: str, phone: str, website: str):
+    db_company = models.Company(inn=inn, name=name, address=address, rating=rating, industry=industry, phone=phone, website=website)
     db.add(db_company)
     db.commit()
     db.refresh(db_company)
@@ -138,5 +138,15 @@ def create_arbitration(db: Session, company_id: int, company_id_partner: int, to
 def get_company_by_inn(db: Session, inn: str):
     return db.query(models.Company).filter(models.Company.inn == inn).first()
 
+def get_company_by_id(db: Session, id: int):
+    return db.query(models.Company).filter(models.Company.id == id).first()
+
 def get_arbitration_by_id_company(db: Session, id: int):
     return db.query(models.Arbitration).filter(models.Arbitration.company_id == id).all()
+
+def get_arbitration_by_id_company_partner(db: Session, id: int):
+    return db.query(models.Arbitration).filter(models.Arbitration.company_id_partner == id).all()
+
+
+def get_companies_by_industry(db: Session, industry: str):
+    return db.query(models.Company).filter(models.Company.industry == industry).all()

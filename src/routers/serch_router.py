@@ -25,10 +25,41 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 templates = Jinja2Templates(directory=conf.TEMPLATE_FOLDER)
 
 
-
 @router.post("/inn", dependencies=[Depends(check_auth)])
 async def client_login(request: Request, inn: str = Form(...), db: Session = Depends(get_db)):
     company = crud.get_company_by_inn(db, inn)
+    partner_company = []
     arbitration = crud.get_arbitration_by_id_company(db, company.id)
+
+
+
+    print(f"arbitration: {arbitration}")
+    if arbitration:
+        for i in arbitration:
+            a = crud.get_company_by_id(db, i.company_id_partner)
+            partner_company.append(a.name)
+        print(f"partner_company: {partner_company}")
+        return templates.TemplateResponse("CheckCompany.html",
+                                          {"request": request, "company": company, "arbitration": arbitration, "partner_company": partner_company})
+    arbitration_part = crud.get_arbitration_by_id_company_partner(db, company.id)
+    print(f"arbitration_part: {arbitration_part}")
+    if arbitration_part:
+        for i in arbitration_part:
+            a = crud.get_company_by_id(db, i.company_id)
+            partner_company.append(a.name)
+        print(f"partner_company: {partner_company}")
+        return templates.TemplateResponse("CheckCompany.html",
+                                          {"request": request, "company": company,
+                                           "arbitration_part": arbitration_part, "partner_company": partner_company})
     return templates.TemplateResponse("CheckCompany.html",
-                                      {"request": request, "company": company, "arbitration": arbitration})
+                                      {"request": request, "company": company})
+
+
+@router.post("/industry", dependencies=[Depends(check_auth)])
+async def client_login(request: Request, industry: str = Form(...), db: Session = Depends(get_db)):
+    companies = crud.get_companies_by_industry(db, industry)
+
+    if companies:
+        return templates.TemplateResponse("CheckCompany.html",
+                                          {"request": request, "company_industry": companies})
+    return RedirectResponse("/check_company", status_code=HTTP_303_SEE_OTHER)

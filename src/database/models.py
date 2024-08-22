@@ -35,6 +35,7 @@ class Company(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     inn = Column(String, unique=True, nullable=False)
+    name = Column(String, nullable=False)
     address = Column(String, nullable=False)
     rating = Column(String, nullable=False)
     industry = Column(String, nullable=False)

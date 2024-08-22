@@ -109,7 +109,7 @@ async def client_login(request: Request, db: Session = Depends(get_db), access: 
         client = crud.check_client_subscribe(db, payload["id"])
         if client == True:
             response = templates.TemplateResponse("CheckCompany.html",
-                                      {"request": request})
+                                      {"request": request, "company": False, "arbitration": False})
             return response
         else:
 

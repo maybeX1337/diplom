@@ -20,13 +20,29 @@
         }
 
         .container {
+            display: flex;
+            flex-direction: column; /* Вертикальное размещение элементов */
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .form-container {
             background-color: #fff;
-            padding: 40px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+        }
+
+        .info-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            max-height: 400px; /* Уменьшенная высота контейнера с информацией */
+            overflow-y: auto; /* Вертикальная прокрутка */
         }
 
         h2 {
@@ -75,35 +91,83 @@
         .form-group:last-of-type {
             margin-bottom: 0;
         }
+
+        .info-container p {
+            margin: 0 0 10px;
+        }
+
+        .info-container hr {
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Search</h2>
-        <form action="/search/inn" method="POST">
-            <div class="form-group">
-                <label for="inn"></label>
-                <input type="text" id="inn" name="inn" placeholder="Введите ИНН" required>
-            </div>
-            <br>
-            <button type="submit">Найти</button>
-        </form>
-        <p>Адрес: {{company.address}}</p>
-        <p>Оценка: {{company.rating}}</p>
-        <p>Отрасль: {{company.industry}}</p>
-        <p>Телефон: {{company.phone}}</p>
-        <p>Сайт: {{company.website}}</p>
+        <div class="form-container">
+            <h2>Search</h2>
+            <form action="/search/inn" method="POST">
+                <div class="form-group">
+                    <label for="inn"></label>
+                    <input type="text" id="inn" name="inn" placeholder="Введите ИНН" required>
+                </div>
+                <br>
+                <button type="submit">Найти</button>
+            </form>
+            <form action="/search/industry" method="POST">
+                <div class="form-group">
+                    <label for="industry"></label>
+                    <input type="text" id="industry" name="industry" placeholder="Введите Отрасль" required>
+                </div>
+                <br>
+                <button type="submit">Найти</button>
+            </form>
+        </div>
+        <!-- Блок с данными расположен под формами -->
+        <div class="info-container">
+            {% if company != False and arbitration != False %}
+                {% if company_industry %}
+                {% for i in company_industry %}
+                <p>ИНН: {{ i.inn }}</p>
+                <p>Название: {{ i.name }}</p>
+                <p>Адрес: {{ i.address }}</p>
+                <p>Оценка: {{ i.rating }}</p>
+                <p>Отрасль: {{ i.industry }}</p>
+                <p>Телефон: {{ i.phone }}</p>
+                <p>Сайт: {{ i.website }}</p>
+                <br>
+                <hr>
+                {% endfor %}
+                {% endif %}
 
-        <br>
-        <p>_______________________________________</p>
-        {%for i in arbitration%}
 
-        <p>Партнер: {{i.company_id_partner}}</p>
-        <p>Общая сумма: {{i.total_sum}}</p>
-        <p>Описание: {{i.short_description}}</p>
-        <br>
-        {%endfor%}
 
+                {% if company %}
+                <p>ИНН: {{ company.inn }}</p>
+                <p>Название: {{ company.name }}</p>
+                <p>Адрес: {{ company.address }}</p>
+                <p>Оценка: {{ company.rating }}</p>
+                <p>Отрасль: {{ company.industry }}</p>
+                <p>Телефон: {{ company.phone }}</p>
+                <p>Сайт: {{ company.website }}</p>
+
+                <br>
+                <hr>
+                {% for i in arbitration %}
+                <p>Партнер: {{ partner_company[0] }}</p>
+                <p>Общая сумма: {{ i.total_sum }}</p>
+                <p>Описание: {{ i.short_description }}</p>
+                <br>
+                {% endfor %}
+
+                {% for i in arbitration_part %}
+                <p>Партнер: {{ partner_company[0] }}</p>
+                <p>Общая сумма: {{ i.total_sum }}</p>
+                <p>Описание: {{ i.short_description }}</p>
+                <br>
+                {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
