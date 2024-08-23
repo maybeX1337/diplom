@@ -39,8 +39,11 @@ async def client_login(request: Request, inn: str = Form(...), db: Session = Dep
             a = crud.get_company_by_id(db, i.company_id_partner)
             partner_company.append(a.name)
         print(f"partner_company: {partner_company}")
+        dlin = []
+        for i in range(0,len(arbitration)):
+            dlin.append(i)
         return templates.TemplateResponse("CheckCompany.html",
-                                          {"request": request, "company": company, "arbitration": arbitration, "partner_company": partner_company})
+                                          {"request": request, "company": company, "arbitration": arbitration, "partner_company": partner_company, "dlin": dlin})
     arbitration_part = crud.get_arbitration_by_id_company_partner(db, company.id)
     print(f"arbitration_part: {arbitration_part}")
     if arbitration_part:
@@ -48,9 +51,12 @@ async def client_login(request: Request, inn: str = Form(...), db: Session = Dep
             a = crud.get_company_by_id(db, i.company_id)
             partner_company.append(a.name)
         print(f"partner_company: {partner_company}")
+        dlin = []
+        for i in range(0, len(arbitration_part)):
+            dlin.append(i)
         return templates.TemplateResponse("CheckCompany.html",
                                           {"request": request, "company": company,
-                                           "arbitration_part": arbitration_part, "partner_company": partner_company})
+                                           "arbitration_part": arbitration_part, "partner_company": partner_company, "dlin":dlin})
     return templates.TemplateResponse("CheckCompany.html",
                                       {"request": request, "company": company})
 

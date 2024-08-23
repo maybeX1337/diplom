@@ -22,5 +22,3 @@ services:
       DB_PORT: 5432
     ports:
       - "8003:8000"
-    volumes:
-      - /home/maybe/PycharmProjects/project_for_diplom/:/main_dir

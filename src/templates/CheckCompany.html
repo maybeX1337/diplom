@@ -152,19 +152,22 @@
 
                 <br>
                 <hr>
-                {% for i in arbitration %}
-                <p>Партнер: {{ partner_company[0] }}</p>
-                <p>Общая сумма: {{ i.total_sum }}</p>
-                <p>Описание: {{ i.short_description }}</p>
+                {%if arbitration%}
+                {% for i in dlin %}
+                <p>Партнер: {{ partner_company[i] }}</p>
+                <p>Общая сумма: {{ arbitration[i].total_sum }}</p>
+                <p>Описание: {{ arbitration[i].short_description }}</p>
                 <br>
                 {% endfor %}
-
-                {% for i in arbitration_part %}
-                <p>Партнер: {{ partner_company[0] }}</p>
-                <p>Общая сумма: {{ i.total_sum }}</p>
-                <p>Описание: {{ i.short_description }}</p>
+                {%endif%}
+                {%if arbitration_part%}
+                {% for i in dlin %}
+                <p>Партнер: {{ partner_company[i] }}</p>
+                <p>Общая сумма: {{ arbitration_part[i].total_sum }}</p>
+                <p>Описание: {{ arbitration_part[i].short_description }}</p>
                 <br>
                 {% endfor %}
+                {%endif%}
                 {% endif %}
             {% endif %}
         </div>
